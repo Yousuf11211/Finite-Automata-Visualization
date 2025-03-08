@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finite Automata Visualization Info</title>
+  <style>
+    /* Dark Theme & Typography */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a1a;
+      font-family: Arial, sans-serif;
+      color: #e0e0e0;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin: 20px 0;
+      color: #f39c12;
+      text-shadow: 2px 2px 4px #000;
+    }
+    h2, h3 {
+      color: #f39c12;
+      text-shadow: 1px 1px 2px #000;
+      text-transform: uppercase;
+    }
+    p, li, dt, dd {
+      font-size: 1.2em;
+      line-height: 1.5;
+    }
+    hr {
+      border: 1px solid #333;
+      margin: 20px 0;
+    }
+    ul {
+      text-align: left;
+      margin: 0 auto;
+      display: inline-block;
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    dl {
+      text-align: left;
+      margin: 0 auto;
+      display: inline-block;
+    }
+    /* Button Styles */
+    .btn {
+      background-color: #f39c12;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1.2em;
+      color: #1a1a1a;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .btn:hover {
+      background-color: #e67e22;
+      color: #fff;
+    }
+    .btn:active {
+      background-color: #d35400;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Finite Automata Visualization</h1>
+    <hr>
+    <h2>What is this Project About</h2>
+    <p>
+      This project is a web-based Finite Automata Visualization tool where you can:
+    </p>
+    <ul>
+      <li>Build DFAs and NFAs</li>
+      <li>Simulate them on an input word stepwise</li>
+      <li>Convert NFAs to DFAs by the powerset construction</li>
+    </ul>
+    <hr>
+    <h2>What are Finite Automata?</h2>
+    <p>
+      Finite automata are abstract computational models used to design and analyze the behavior of digital systems.
+      They consist of a finite number of states and transitions between those states based on input symbols.
+    </p>
+    <h3>Deterministic Finite Automata (DFA)</h3>
+    <p>
+      A DFA is an automaton where each state has exactly one transition for each input symbol.
+      This determinism makes DFAs predictable and efficient, which is why they are widely used in software applications,
+      such as lexical analysis and pattern matching.
+    </p>
+    <h3>Nondeterministic Finite Automata (NFA)</h3>
+    <p>
+      An NFA can have multiple transitions for the same input symbol or even transitions without any input (ε-transitions).
+      This flexibility simplifies the design of automata for complex patterns, though NFAs are often converted to DFAs for execution.
+    </p>
+    <hr>
+    <h2>How to Use this Project</h2>
+    <p>This project has two modes:</p>
+    <dl>
+      <dt>Create Mode</dt>
+      <dd>
+        Build a DFA or NFA by adding states and arrows to the canvas. Click on a state or arrow to change its label or mark it as accepting.
+        Arrows can include multiple symbols by separating each letter with commas.<br>
+        <span style="color: red;">Note: An arrow labeled "ab" represents a single unique symbol "ab", not two separate symbols.</span>
+      </dd>
+      <dt>Simulation Mode</dt>
+      <dd>
+        Specify an input word and step through the simulation to see how the current states update. You can also convert an NFA into a DFA.<br>
+        <span style="color: green;">Symbols with multiple letters are accessed using angle brackets (e.g., &lt;ab&gt; is a single symbol).</span>
+      </dd>
+    </dl>
+    <hr>
+    <h2>How Does NFA Computation Work in This Project</h2>
+    <p>
+      At each simulation step, every possible transition for the input symbol is taken—including any jump edges.
+      This process results in a set of current states where non-accepting paths are highlighted in <span style="color: red;">red</span>
+      and accepting paths in <span style="color: green;">green</span>.
+    </p>
+    <hr>
+    <br>
+    <button class="btn" onclick="window.location.href='button_input.html'">Go to Button Input</button>
+    <button class="btn" onclick="window.location.href='string_input.html'">Go to String Input</button>
+
+  </div>
+</body>
+</html>
