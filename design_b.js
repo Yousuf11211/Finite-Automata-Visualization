@@ -117,10 +117,10 @@ function nfaToRegex(nfa) {
     let lastArrow = null;
 
     // Construct singular initial and accepting states required
-    nfa.addArrow(start, nfa.initialState, '\u03b5', false, false);
-    nfa.addArrow(start, start, '\u03b5', false, true);
+    nfa.addArrow(start, nfa.initialState, '$', false, false);
+    nfa.addArrow(start, start, '$', false, true);
     for (const state of nfa.acceptingStates) {
-        nfa.addArrow(state, end, '\u03b5', false, false);
+        nfa.addArrow(state, end, '$', false, false);
         nfa.removeAcception(state);
     }
     nfa.makeAccepting(end);
@@ -151,17 +151,17 @@ function nfaToRegex(nfa) {
                 // If state has a loop arrow, assemble regex like A(loop)*B
                 if (selfLoop) {
                     if (selfLoop.label.text.length > 1) selfLoop.label.text = "(" + selfLoop.label.text + ")";
-                    strToAdd = (A.label.text != '\u03b5' ? A.label.text : '')
-                        + (selfLoop.label.text != '\u03b5' ? selfLoop.label.text + "*" : '')
-                        + (B.label.text != '\u03b5' ? B.label.text : '');
+                    strToAdd = (A.label.text != '$' ? A.label.text : '')
+                        + (selfLoop.label.text != '$' ? selfLoop.label.text + "*" : '')
+                        + (B.label.text != '$' ? B.label.text : '');
                     // Otherwise assemble regex like AB
                 } else {
-                    strToAdd = (A.label.text != '\u03b5' ? A.label.text : '')
-                        + (B.label.text != '\u03b5' ? B.label.text : '');
+                    strToAdd = (A.label.text != '$' ? A.label.text : '')
+                        + (B.label.text != '$' ? B.label.text : '');
                 }
                 // Handle cases where arrow labels are blank as empty string regex
-                if (strToAdd == '') strToAdd = '\u03b5';
-                if (strToAdd == '*') strToAdd = '\u03b5*';
+                if (strToAdd == '') strToAdd = '$';
+                if (strToAdd == '*') strToAdd = '$*';
                 // Finally add the bypassing arrow to the graph
                 lastArrow = nfa.addArrow(
                     A.fromState,
@@ -220,7 +220,7 @@ RegexParser.prototype.shuntingYard = function (string) {
     while (inputQueue.length > 0) {
         let token = inputQueue.shift();
         if (token == '!') {
-            token = '\u03b5';
+            token = '$';
         }
 
         if (this.operators.includes(token)) {
@@ -308,11 +308,11 @@ RegexParser.prototype.thompson = function (regex) {
         let from = newGraph.addState(stateCount++, 50 + Math.random() * 900, 50 + Math.random() * 400);
         let to = newGraph.addState(stateCount++, 50 + Math.random() * 900, 50 + Math.random() * 400);
 
-        newGraph.addArrow(from, ns.first, '\u03b5', false, false);
-        newGraph.addArrow(from, nt.first, '\u03b5', false, false);
+        newGraph.addArrow(from, ns.first, '$', false, false);
+        newGraph.addArrow(from, nt.first, '$', false, false);
 
-        newGraph.addArrow(ns.last, to, '\u03b5', false, false);
-        newGraph.addArrow(nt.last, to, '\u03b5', false, false);
+        newGraph.addArrow(ns.last, to, '$', false, false);
+        newGraph.addArrow(nt.last, to, '$', false, false);
         return { first: from, last: to };
     }
 
@@ -340,11 +340,11 @@ RegexParser.prototype.thompson = function (regex) {
         let from = newGraph.addState(stateCount++, 50 + Math.random() * 900, 50 + Math.random() * 400);
         let to = newGraph.addState(stateCount++, 50 + Math.random() * 900, 50 + Math.random() * 400);
 
-        newGraph.addArrow(from, ns.first, '\u03b5', false, false);
-        newGraph.addArrow(ns.last, to, '\u03b5', false, false);
+        newGraph.addArrow(from, ns.first, '$', false, false);
+        newGraph.addArrow(ns.last, to, '$', false, false);
 
-        newGraph.addArrow(ns.last, ns.first, '\u03b5', false, false);
-        newGraph.addArrow(from, to, '\u03b5', false, false);
+        newGraph.addArrow(ns.last, ns.first, '$', false, false);
+        newGraph.addArrow(from, to, '$', false, false);
 
         return { first: from, last: to };
     }
@@ -388,7 +388,7 @@ RegexParser.prototype.thompson = function (regex) {
         }
     }
     if (procStack.length == 1) {
-        newGraph.addArrow(procStack[0].first, procStack[0].first, '\u03b5', false, true);
+        newGraph.addArrow(procStack[0].first, procStack[0].first, '$', false, true);
         newGraph.makeAccepting(procStack[0].last);
         procStack[0].first.position(100, 288);
         procStack[0].last.position(924, 288);
@@ -410,7 +410,7 @@ function epsilonClosure(nfa, states) {
     states.forEach(item => closure.add(item));
     var stateStack = [...states];
 
-    let ep = nfa.sigma.indexOf('\u03b5');
+    let ep = nfa.sigma.indexOf('$');
     if (ep == -1) return closure; // No epsilon in alphabet - epsilon closure is trivial
 
     while (stateStack.length > 0) {
@@ -479,7 +479,7 @@ PSConstructor.prototype.deltaGivenR = function (nfa, stateSet, symbol) {
  **/
 PSConstructor.prototype.pConstruct = function (nfa) {
 
-    let ep = nfa.sigma.indexOf('\u03b5');
+    let ep = nfa.sigma.indexOf('$');
 
     let q0closure = epsilonClosure(nfa, [nfa.q0]);
 
@@ -569,7 +569,7 @@ PSConstructor.prototype.discoveryToGraph = function (nfa, discovery) {
     let to = (set) => set.size === initial.size && [...set].every((x) => initial.has(x));
     console.log(newGraph.states);
     let initialState = newGraph.states[stateArray.findIndex(to)];
-    newGraph.addArrow(initialState, initialState, '\u03b5', false, true);
+    newGraph.addArrow(initialState, initialState, '$', false, true);
 
     newGraph.initialState.position(100, 288);
 
@@ -680,7 +680,7 @@ FA.prototype.buildTransitionFunction = function () {
         let i = this.q.indexOf(mthArrow.fromState);
 
         if (mthArrow.label.text == '') {
-            mthArrow.updateLabel('\u03b5');
+            mthArrow.updateLabel('$');
         } // TODO: Update for multiarrow support
 
         for (const symbol of mthArrow.symbols) {
@@ -794,7 +794,7 @@ FA.prototype.isDeterministic = function () {
 
     let deterministic = true;
 
-    if (this.sigma.includes("\u03b5")) {
+    if (this.sigma.includes("$")) {
         deterministic = false;
         return deterministic;
     }
@@ -1387,7 +1387,7 @@ Arrow.prototype.unfocus = function () {
  **/
 Arrow.prototype.updateLabel = function (text) {
     if (text == '') {
-        text = "\u03b5";
+        text = "$";
     }
     this.label.text = text;
     this.symbols.clear();
@@ -1779,11 +1779,11 @@ var q1 = graph.addState("1", 400, 300);
 var q2 = graph.addState("2", 600, 200);
 var q3 = graph.addState("3", 600, 400);
 
-graph.addArrow(q1, q2, '\u03b5', false, false);
+graph.addArrow(q1, q2, '$', false, false);
 graph.addArrow(q1, q3, 'a', false, false);
 graph.addArrow(q2, q2, 'b', true, false);
 graph.addArrow(q3, q3, 'a,b', true, false);
-graph.addArrow(q1, q1, '\u03b5', false, true);
+graph.addArrow(q1, q1, '$', false, true);
 
 graph.makeAccepting(q2);
 graph.makeAccepting(q3);
@@ -1816,7 +1816,7 @@ function onButtonDown(event) {
             focusTarget = workingGraph.addArrow(
                 creatingArrow.fromState,
                 creatingArrow.toState,
-                "\u03b5",
+                "$",
                 (creatingArrow.fromState == creatingArrow.toState),
                 creatingArrow.initial
             );

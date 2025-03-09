@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="Ivan Zuzak, Vedrana Jankovic" />
+  <meta name="keywords" content="fsm, finite-state machine, regex, regular expression, simulation, software, graphviz" />
+  <meta name="description" content="FSM simulator simulation page" />
+  <meta name="viewport" content="width=device-width" />
+
+  <title>FSM Simulation</title>
+
+  <!-- External Stylesheets -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" />
+  <link rel="stylesheet" href="styles/fsm_simulator.css" />
+
+  <!-- Dark Theme Overrides -->
+  <style>
+    /* Global Styles */
+    body {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    /* Force dark background for key Bootstrap containers and layout elements */
+    .container,
+    .header,
+    .content,
+    .graph,
+    .controls,
+    .footer,
+    .row-fluid,
+    .span12,
+    .control-group {
+      background-color: #1a1a1a !important;
+    }
+    /* Header */
+    .header {
+      padding: 20px 0;
+      text-align: center;
+    }
+    .header h1,
+    .header h2 {
+      color: #f39c12;
+      text-shadow: 2px 2px 4px #000;
+      margin: 0;
+    }
+    /* Graph Area */
+    .graph {
+      background-color: #333;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    /* Button Overrides */
+    .btn {
+      background: #f39c12 !important;         /* Solid orange background */
+      background-image: none !important;        /* Remove any gradients/images */
+      color: #000 !important;                   /* Black text initially */
+      border: none !important;
+      border-radius: 5px !important;
+      padding: 10px 20px !important;
+      font-size: 1.2em !important;
+      transition: none !important;
+    }
+    .btn:hover, .btn:active {
+      background: #f39c12 !important;         /* Keep the solid orange on hover */
+      background-image: none !important;
+      color: #fff !important;                   /* Change text to white on hover */
+    }
+    /* Inputs and Textareas */
+    input[type="text"], textarea {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      border: 1px solid #444;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    /* Footer */
+    .footer {
+      padding: 20px;
+      text-align: center;
+    }
+    /* Additional Overrides */
+    .control-group {
+      background-color: transparent !important;
+    }
+    /* Icon colors */
+    .icon-fast-backward, .icon-backward, .icon-forward {
+      color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="container">
+     <br><br><h1>Finite Automata Visualization</h1><br>
+      <h2>(Uses String)</h2><br>
+      <button class="btn" onclick="window.location.href='../../button_input.html'">Change Input Type</button>
+      <button id="backToCreate" class="btn">Create New Automata</button>
+
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container graph">
+      <center><h2>Finite Automata</h2></center>
+      <div id="automatonGraph"></div>
+    </div>
+
+    <div class="container controls">
+      <div class="row-fluid">
+        <div class="span12 column">
+          <h3>Simulate</h3>
+          <div class="instructions">
+            <!-- Simulation instructions can go here -->
+          </div>
+
+          <p>
+            <div class="control-group">
+              <input id="inputString" type="text" class="input-block-level" placeholder="Enter String" disabled spellcheck="false">
+            </div>
+          </p>
+
+          <p>
+            <button id="startStop" class="btn" disabled>Start</button>
+            <button id="inputFirst" class="btn" disabled>
+              <i class="icon-fast-backward"></i> Reset
+            </button>
+            <!-- <button id="inputPrevious" class="btn" disabled>
+              <i class="icon-backward"></i> Step backward
+            </button> -->
+            <button id="inputNext" class="btn" disabled>
+              <i class="icon-forward"></i> Step
+            </button>
+          </p>
+
+          <p id="inputError" class="text-error"></p>
+
+          <!-- "Create" button to go back to the create page -->
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+  <script src="../assets/viz.js"></script>
+  <script src="../../lib/browser/noam.js"></script>
+  <script src="scripts/fsm_simulator.js"></script>
+  <script>
+    $(document).ready(function(){
+      // Retrieve the stored FSM definition and recreate the automaton
+      var fsmDef = localStorage.getItem("fsmDefinition");
+      if (fsmDef) {
+        automaton = noam.fsm.parseFsmFromString(fsmDef);
+        drawGraph();
+        resetAutomaton();
+        // Enable simulation controls if appropriate
+        $("#inputString").attr("disabled", false);
+        $("#startStop").attr("disabled", false);
+      }
+      // Restore the saved transition graph HTML if available
+      var storedGraph = localStorage.getItem("transitionGraph");
+      if (storedGraph) {
+        $("#automatonGraph").html(storedGraph);
+      }
+    });
+
+    // "Create" button to go back to index.html so the user can update the automaton.
+    $("#backToCreate").click(function() {
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

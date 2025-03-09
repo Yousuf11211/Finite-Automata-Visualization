@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="Ivan Zuzak, Vedrana Jankovic" />
+  <meta name="keywords" content="fsm, finite-state machine, regex, regular expression, simulation, software, graphviz" />
+  <meta name="description" content="FSM simulator is a Web application for step-by-step visual simulation of finite state machines which are defined with regular expressions." />
+  <meta name="viewport" content="width=device-width" />
+
+  <title>Finite Automata Visualization - Create</title>
+
+  <!-- External Stylesheets -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" />
+  <link rel="stylesheet" href="styles/fsm_simulator.css" />
+
+  <!-- Dark Theme Overrides -->
+  <style>
+    /* Global Styles */
+    body {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    /* Force dark background for Bootstrap containers and layout elements */
+    .container,
+    .header,
+    .content,
+    .controls,
+    .graph,
+    .footer,
+    .row-fluid,
+    .span6,
+    .tab-pane,
+    .nav-tabs {
+      background-color: #1a1a1a !important;
+    }
+    /* Header */
+    .header {
+      padding: 20px 0;
+      text-align: center;
+    }
+    .header h1, .header h2 {
+      color: #f39c12;
+      text-shadow: 2px 2px 4px #000;
+      margin: 0;
+    }
+    /* Content and Controls */
+    .content {
+      padding: 20px;
+    }
+    .controls, .graph {
+      margin-top: 20px;
+    }
+    /* Tabs */
+    .nav-tabs li a {
+      background-color: #f39c12;
+      color: #1a1a1a;
+      border: 1px solid #444;
+    }
+    .nav-tabs li.active a,
+    .nav-tabs li a:hover {
+      background-color: #e67e22;
+      color: #fff;
+    }
+    /* Button Overrides */
+    .btn {
+      background: #f39c12 !important;
+      background-image: none !important;
+      color: #000 !important;
+      border: none !important;
+      border-radius: 5px !important;
+      padding: 10px 20px !important;
+      font-size: 1.2em !important;
+      transition: none !important;
+    }
+    .btn:hover, .btn:active {
+      background: #f39c12 !important;
+      background-image: none !important;
+      color: #fff !important;
+    }
+    /* Inputs, Textareas, and Selects */
+    textarea, input[type="text"], select {
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      border: 1px solid #444;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    /* Graph area */
+    .graph {
+      background-color: #333;
+      padding: 20px;
+    }
+    .text-error {
+      color: #e74c3c;
+    }
+    /* Additional overrides */
+    .control-group {
+      background-color: transparent;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="container">
+      <br><br><h1>Finite Automata Visualization</h1><br>
+      <h2>(Uses String)</h2><br>
+      <button class="btn" onclick="window.location.href='../../button_input.html'">Change Input Type</button>
+
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="container controls">
+      <div class="row-fluid">
+        <!-- Centering the "Create" section -->
+        <div class="span6 offset3 column">
+          <center><h2>Create</h2></center>
+
+          <ul class="nav nav-tabs">
+            <!-- Regex input tab commented out -->
+            <!-- <li id="regexinput"><a href="#tab1" data-toggle="tab">Input regex</a></li> -->
+            <li id="fsminput" class="active">
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane" id="tab1">
+              <!-- Regex input content (hidden by default) -->
+              <div class="instructions">
+              </div>
+
+              <p>
+                <button id="generateRegex" class="btn">Generate random regex</button>
+              </p>
+
+              <p>
+                <div class="control-group">
+                  <input id="regex" type="text" class="input-block-level" placeholder="or write your own" spellcheck="false">
+                </div>
+              </p>
+
+              <p>
+                <div class="control-group">
+                  <label for="automatonType">Select generated FSM type: </label>
+                  <select id="automatonType">
+                    <option value="NFA">NFA</option>
+                    <option value="DFA">DFA</option>
+                  </select>
+                </div>
+              </p>
+            </div>
+            <div class="tab-pane active" id="tab2">
+              <!-- FSM input content (active by default) -->
+              <div class="instructions">
+                <p>
+                  <center><button id="copySampleCode" class="btn">Copy sample code</button></center>
+                </p>
+              </div>
+              <p>
+                <textarea id="fsm" class="input-block-level" placeholder="or write your own" spellcheck="false"></textarea>
+              </p>
+            </div>
+          </div>
+
+          <p id="fsmError" class="text-error"></p>
+
+          <p>
+            <center><button id="createAutomaton" class="btn" disabled >Create automata</button></center>
+          </p>
+        </div>
+      </div>
+
+      <hr />
+
+      <!-- Centering the "Simulate" button -->
+      <div class="container" style="text-align: center;">
+        <center><button id="simulateBtn" class="btn">Simulate</button></center>
+      </div>
+    </div>
+
+    <div class="container graph">
+      <center><h2>Finite Automata</h2></center>
+
+      <div id="automatonGraph"></div>
+    </div>
+
+    <div class="footer"></div>
+
+    <!-- Hidden sample code -->
+    <textarea id="sampleCode" style="position: absolute; left: -9999px;">
+#states
+s0
+s1
+s2
+s3
+#initial
+s0
+#accepting
+s0
+s2
+s3
+#alphabet
+a
+b
+c
+#transitions
+s0:a>s1,s2
+s1:a>s2
+s1:b>s0
+s3:a>s1
+s3:b>s3
+    </textarea>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+  <script src="../assets/viz.js"></script>
+  <script src="../../lib/browser/noam.js"></script>
+  <script src="scripts/fsm_simulator.js"></script>
+  <script>
+    // Copy sample code functionality
+    $("#copySampleCode").click(function() {
+      var sampleText = $("#sampleCode").val().trim();
+      var tempInput = $("<textarea>");
+      $("body").append(tempInput);
+      tempInput.val(sampleText).select();
+      document.execCommand("copy");
+      tempInput.remove();
+      alert("Sample code copied to clipboard!");
+    });
+
+    // When "Create automata" is clicked, create the automaton and store its definition
+    $("#createAutomaton").click(function() {
+      if (inputIsRegex) {
+        regex = $("#regex").val();
+        automatonType = $("#automatonType").val();
+        automaton = noam.re.string.toAutomaton(regex);
+        if (automatonType === noam.fsm.nfaType) {
+          automaton = noam.fsm.convertEnfaToNfa(automaton);
+        }
+        if (automatonType === noam.fsm.dfaType) {
+          automaton = noam.fsm.convertEnfaToNfa(automaton);
+          automaton = noam.fsm.convertNfaToDfa(automaton);
+          automaton = noam.fsm.minimize(automaton);
+          automaton = noam.fsm.convertStatesToNumbers(automaton);
+        }
+        // Store serialized automaton definition
+        localStorage.setItem("fsmDefinition", noam.fsm.serializeFsmToString(automaton));
+      } else {
+        automaton = noam.fsm.parseFsmFromString($("#fsm").val());
+        localStorage.setItem("fsmDefinition", $("#fsm").val());
+      }
+      initialize();
+      drawGraph();
+      resetAutomaton();
+      $("#generateRandomString").attr("disabled", false);
+      $("#generateRandomAcceptableString").attr("disabled", false);
+      $("#generateRandomUnacceptableString").attr("disabled", false);
+      $("#inputString").attr("disabled", false);
+    });
+
+    // When "Simulate" is clicked, store the current transition graph (if needed) and navigate to simulation page.
+    $("#simulateBtn").click(function() {
+      var graphHTML = $("#automatonGraph").html();
+      localStorage.setItem("transitionGraph", graphHTML);
+      window.location.href = "simulate.html";
+    });
+  </script>
+</body>
+</html>
