@@ -106,91 +106,92 @@
 <body>
   <div class="header">
     <div class="container">
-      <br><br><h1>Finite Automata Visualization</h1><br>
-      <h2>(Uses String)</h2><br>
+      <br><h1>Still in development</h1><br><h1>Finite Automata Visualization</h1><br>
+      <h2>(Manual Input)</h2><br>
       <button class="btn" onclick="window.location.href='../../button_input.html'">Change Input Type</button>
-
     </div>
   </div>
 
-    <div class="container controls">
-      <div class="row-fluid">
-        <!-- Centering the "Create" section -->
-        <div class="span6 offset3 column">
-          <center><h2>Create</h2></center>
+  <div class="container controls">
+    <div class="row-fluid">
+      <!-- Centering the "Create" section -->
+      <div class="span6 offset3 column">
+        <center><h2>Create</h2></center>
 
-          <ul class="nav nav-tabs">
-            <!-- Regex input tab commented out -->
-            <!-- <li id="regexinput"><a href="#tab1" data-toggle="tab">Input regex</a></li> -->
-            <li id="fsminput" class="active">
-            </li>
-          </ul>
+        <ul class="nav nav-tabs">
+          <!-- Regex input tab commented out -->
+          <!-- <li id="regexinput"><a href="#tab1" data-toggle="tab">Input regex</a></li> -->
+          <li id="fsminput" class="active"></li>
+        </ul>
 
-          <div class="tab-content">
-            <div class="tab-pane" id="tab1">
-              <!-- Regex input content (hidden by default) -->
-              <div class="instructions">
+        <div class="tab-content">
+          <div class="tab-pane" id="tab1">
+            <!-- Regex input content (hidden by default) -->
+            <div class="instructions"></div>
+            <p>
+              <button id="generateRegex" class="btn">Generate random regex</button>
+            </p>
+            <p>
+              <div class="control-group">
+                <input id="regex" type="text" class="input-block-level" placeholder="or write your own" spellcheck="false">
               </div>
-
-              <p>
-                <button id="generateRegex" class="btn">Generate random regex</button>
-              </p>
-
-              <p>
-                <div class="control-group">
-                  <input id="regex" type="text" class="input-block-level" placeholder="or write your own" spellcheck="false">
-                </div>
-              </p>
-
-              <p>
-                <div class="control-group">
-                  <label for="automatonType">Select generated FSM type: </label>
-                  <select id="automatonType">
-                    <option value="NFA">NFA</option>
-                    <option value="DFA">DFA</option>
-                  </select>
-                </div>
-              </p>
-            </div>
-            <div class="tab-pane active" id="tab2">
-              <!-- FSM input content (active by default) -->
-              <div class="instructions">
-                <p>
-                  <center><button id="copySampleCode" class="btn">Copy sample code</button></center>
-                </p>
+            </p>
+            <p>
+              <div class="control-group">
+                <label for="automatonType">Select generated FSM type: </label>
+                <select id="automatonType">
+                  <option value="NFA">NFA</option>
+                  <option value="DFA">DFA</option>
+                </select>
               </div>
-              <p>
-                <textarea id="fsm" class="input-block-level" placeholder="or write your own" spellcheck="false"></textarea>
-              </p>
-            </div>
+            </p>
           </div>
-
-          <p id="fsmError" class="text-error"></p>
-
-          <p>
-            <center><button id="createAutomaton" class="btn" disabled >Create automata</button></center>
-          </p>
+          <div class="tab-pane active" id="tab2">
+            <!-- FSM input content (active by default) -->
+            <div class="instructions">
+              <p>
+                <center>
+                  <button id="copyDFASample" class="btn">Copy DFA sample</button>
+                  <button id="copyNFASample" class="btn">Copy NFA sample</button>
+                </center>
+              </p>
+            </div>
+            <p>
+              <textarea id="fsm" class="input-block-level" spellcheck="false"></textarea>
+            </p>
+          
+            <script>
+              document.getElementById("fsm").placeholder = "Sample is given above\n\nThe code format should be as below:\n\n#states\n#initial\n#accepting\n#alphabet\n#transitions";
+            </script>
+          
+          </div>
         </div>
-      </div>
 
-      <hr />
+        <p id="fsmError" class="text-error"></p>
 
-      <!-- Centering the "Simulate" button -->
-      <div class="container" style="text-align: center;">
-        <center><button id="simulateBtn" class="btn">Simulate</button></center>
+        <p>
+          <center><button id="createAutomaton" class="btn" disabled>Create automata</button></center>
+        </p>
       </div>
     </div>
 
-    <div class="container graph">
-      <center><h2>Finite Automata</h2></center>
+    <hr />
 
-      <div id="automatonGraph"></div>
+    <!-- Centering the "Simulate" button -->
+    <div class="container" style="text-align: center;">
+      <center><button id="simulateBtn" class="btn">Simulate</button></center>
     </div>
+  </div>
 
-    <div class="footer"></div>
+  <div class="container graph">
+    <center><h2>Finite Automata</h2></center>
+    <div id="automatonGraph"></div>
+  </div>
 
-    <!-- Hidden sample code -->
-    <textarea id="sampleCode" style="position: absolute; left: -9999px;">
+  <div class="footer"></div>
+
+  <!-- Hidden sample codes -->
+  <textarea id="sampleCodeDFA" style="position: absolute; left: -9999px;">
 #states
 s0
 s1
@@ -207,12 +208,45 @@ a
 b
 c
 #transitions
-s0:a>s1,s2
-s1:a>s2
-s1:b>s0
+s0:a>s0
+s0:b>s0
+s0:c>s0
+s1:a>s3
+s1:b>s3
+s1:c>s1
+s2:a>s0
+s2:b>s2
+s2:c>s0
 s3:a>s1
-s3:b>s3
-    </textarea>
+s3:b>s0
+s3:c>s2
+  </textarea>
+
+  <textarea id="sampleCodeNFA" style="position: absolute; left: -9999px;">
+#states
+s0
+s1
+s2
+s3
+#initial
+s0
+#accepting
+s0
+s1
+#alphabet
+a
+b
+c
+#transitions
+s0:b>s0,s1
+s0:c>s2
+s1:a>s2
+s1:b>s3
+s2:a>s2,s3
+s2:b>s0,s1
+s2:c>s3
+s3:c>s0
+  </textarea>
 
   <!-- Scripts -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -221,22 +255,54 @@ s3:b>s3
   <script src="../../lib/browser/noam.js"></script>
   <script src="scripts/fsm_simulator.js"></script>
   <script>
-    // Copy sample code functionality
-    $("#copySampleCode").click(function() {
-      var sampleText = $("#sampleCode").val().trim();
+    // Enable "Create automata" button when the user types into either input
+    $("#fsm, #regex").on("input", function(){
+      if ($("#fsm").val().trim() !== "" || $("#regex").val().trim() !== "") {
+        $("#createAutomaton").attr("disabled", false);
+      } else {
+        $("#createAutomaton").attr("disabled", true);
+      }
+      $("#fsmError").text("");
+    });
+
+    // Copy DFA sample functionality
+    $("#copyDFASample").click(function() {
+      var sampleText = $("#sampleCodeDFA").val().trim();
       var tempInput = $("<textarea>");
       $("body").append(tempInput);
       tempInput.val(sampleText).select();
       document.execCommand("copy");
       tempInput.remove();
-      alert("Sample code copied to clipboard!");
+      alert("DFA sample code copied to clipboard!");
     });
 
-    // When "Create automata" is clicked, create the automaton and store its definition
+    // Copy NFA sample functionality
+    $("#copyNFASample").click(function() {
+      var sampleText = $("#sampleCodeNFA").val().trim();
+      var tempInput = $("<textarea>");
+      $("body").append(tempInput);
+      tempInput.val(sampleText).select();
+      document.execCommand("copy");
+      tempInput.remove();
+      alert("NFA sample code copied to clipboard!");
+    });
+
+    // When "Create automata" is clicked, validate input then create the automaton and store its definition
     $("#createAutomaton").click(function() {
-      if (inputIsRegex) {
-        regex = $("#regex").val();
-        automatonType = $("#automatonType").val();
+      if (!window.inputIsRegex) {
+        if ($("#fsm").val().trim() === "") {
+          $("#fsmError").text("Please enter FSM code.");
+          return;
+        }
+        automaton = noam.fsm.parseFsmFromString($("#fsm").val());
+        localStorage.setItem("fsmDefinition", $("#fsm").val());
+      } else {
+        if ($("#regex").val().trim() === "") {
+          $("#fsmError").text("Please enter a regex or generate one.");
+          return;
+        }
+        var regex = $("#regex").val();
+        var automatonType = $("#automatonType").val();
         automaton = noam.re.string.toAutomaton(regex);
         if (automatonType === noam.fsm.nfaType) {
           automaton = noam.fsm.convertEnfaToNfa(automaton);
@@ -247,12 +313,9 @@ s3:b>s3
           automaton = noam.fsm.minimize(automaton);
           automaton = noam.fsm.convertStatesToNumbers(automaton);
         }
-        // Store serialized automaton definition
         localStorage.setItem("fsmDefinition", noam.fsm.serializeFsmToString(automaton));
-      } else {
-        automaton = noam.fsm.parseFsmFromString($("#fsm").val());
-        localStorage.setItem("fsmDefinition", $("#fsm").val());
       }
+      // Draw the automata
       initialize();
       drawGraph();
       resetAutomaton();
@@ -262,12 +325,19 @@ s3:b>s3
       $("#inputString").attr("disabled", false);
     });
 
-    // When "Simulate" is clicked, store the current transition graph (if needed) and navigate to simulation page.
+    // When "Simulate" is clicked, check for a valid custom automata definition.
     $("#simulateBtn").click(function() {
-      var graphHTML = $("#automatonGraph").html();
-      localStorage.setItem("transitionGraph", graphHTML);
-      window.location.href = "simulate.html";
-    });
+  var fsmDef = localStorage.getItem("fsmDefinition");
+  if (!fsmDef || fsmDef.trim() === "") {
+    alert("Draw automata with initial state first");
+    return;
+  }
+  // Otherwise, store the current transition graph and navigate.
+  var graphHTML = $("#automatonGraph").html();
+  localStorage.setItem("transitionGraph", graphHTML);
+  window.location.href = "simulate.html";
+});
+
   </script>
 </body>
 </html>

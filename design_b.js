@@ -21,7 +21,7 @@ var psConstructor = new PSConstructor();
 let app = new PIXI.Application({
     width: 1024,
     height: 576,
-    backgroundColor: 0xfdf0ce,
+    backgroundColor: 0xFFFFFF,  //0xfdf0ce,
     resolution: window.devicePixelRatio || 1,
     antialias: true,
     autoDensity: true,
@@ -40,14 +40,14 @@ const logoFont = new PIXI.TextStyle({
     fontFamily: 'serif',
     fontStyle: 'italic',
     fontSize: 36,
-    fill: 0x0000bb
+    fill: 0x000000
 });
 
 const acceptFont = new PIXI.TextStyle({
     fontFamily: 'serif',
     fontStyle: 'italic',
     fontSize: 24,
-    fill: 0x00bb00
+    fill: 0x000000
 });
 
 /**
@@ -1503,7 +1503,7 @@ arrowGhost.y = 15;
 arrowGhost.visible = false;
 app.stage.addChild(arrowGhost);
 
-let logo = new PIXI.Text("Create", logoFont);
+let logo = new PIXI.Text("", logoFont);
 logo.x = 880;
 logo.y = 10;
 logo.alpha = 0.5;
@@ -1516,10 +1516,14 @@ wordTracker.y = 540;
 app.stage.addChild(wordTracker);
 wordTracker.visible = false;
 
-let acceptTracker = new PIXI.Text('String Accepted', acceptFont);
+//let acceptTracker = new PIXI.Text('String Accepted', acceptFont);
+let acceptTracker = new PIXI.Text('abc', acceptFont);
+
 acceptTracker.x = 850;
 acceptTracker.y = 520;
-acceptTracker.fill = 0x00bb00;
+acceptTracker.fill = 0xD2D2D4;
+//acceptTracker.fill = 0x00bb00;
+
 
 app.stage.addChild(acceptTracker);
 acceptTracker.visible = false;
@@ -1608,7 +1612,7 @@ function initControls() {
             document.getElementById('inputs').style.display = "none";
             document.getElementById('simulates').style.display = "inline-block";
             wordTracker.visible = true;
-            logo.text = "Simulate";
+            logo.text = "";
             workingAutomaton = new FA(workingGraph);
             document.getElementById('stepOne').disabled = true;
             if (workingAutomaton.deterministic) {
@@ -1775,18 +1779,18 @@ initControls();
 var graph = new Graph();
 workingGraph = graph;
 
-var q1 = graph.addState("1", 400, 300);
-var q2 = graph.addState("2", 600, 200);
-var q3 = graph.addState("3", 600, 400);
+// var q1 = graph.addState("1", 400, 300);
+// var q2 = graph.addState("2", 600, 200);
+// var q3 = graph.addState("3", 600, 400);
 
-graph.addArrow(q1, q2, '$', false, false);
-graph.addArrow(q1, q3, 'a', false, false);
-graph.addArrow(q2, q2, 'b', true, false);
-graph.addArrow(q3, q3, 'a,b', true, false);
-graph.addArrow(q1, q1, '$', false, true);
+// graph.addArrow(q1, q2, '$', false, false);
+// graph.addArrow(q1, q3, 'a', false, false);
+// graph.addArrow(q2, q2, 'b', true, false);
+// graph.addArrow(q3, q3, 'a,b', true, false);
+// graph.addArrow(q1, q1, '$', false, true);
 
-graph.makeAccepting(q2);
-graph.makeAccepting(q3);
+// graph.makeAccepting(q2);
+// graph.makeAccepting(q3);
 
 // Event handling functions
 

@@ -107,7 +107,7 @@
 <body>
   <div class="container">
     <h1>Finite Automata Visualization</h1>
-    <h2>(Uses Buttons)</h3>
+    <h2>(Button Input)</h3>
     <!-- Button linking to info.html -->
     <button class="info-btn" onclick="window.location.href='info.html'">More Info</button>
     <button class="btn" onclick="window.location.href='webapps/fsm_simulator/index.html'">Change Input Type</button>
@@ -142,7 +142,7 @@
       <!-- Simulation Controls Moved Above the Canvas -->
       <div class="simulates" id="simulates">
         <div>
-          <input type="button" value="Create New Automata" id="create" />
+          <input type="button" value="Create or Update Automata" id="create" />
         </div>
         <div>
           <input type="text" id="wordbox" placeholder="Empty string" />
@@ -154,8 +154,9 @@
           <input type="button" value="Reset" id="resetAuto" />
         </div>
         <div>
-          <input type="button" value="Convert to DFA" id="convert" />
-        </div>
+          <input type="button" value="Convert to DFA" id="convert" style="visibility: hidden;" />
+      </div>
+      
       </div>
       <br>
       <!-- Canvas for drawing the automata -->

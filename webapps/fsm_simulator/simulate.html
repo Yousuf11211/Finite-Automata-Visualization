@@ -54,9 +54,9 @@
     }
     /* Button Overrides */
     .btn {
-      background: #f39c12 !important;         /* Solid orange background */
-      background-image: none !important;        /* Remove any gradients/images */
-      color: #000 !important;                   /* Black text initially */
+      background: #f39c12 !important;
+      background-image: none !important;
+      color: #000 !important;
       border: none !important;
       border-radius: 5px !important;
       padding: 10px 20px !important;
@@ -64,9 +64,9 @@
       transition: none !important;
     }
     .btn:hover, .btn:active {
-      background: #f39c12 !important;         /* Keep the solid orange on hover */
+      background: #f39c12 !important;
       background-image: none !important;
-      color: #fff !important;                   /* Change text to white on hover */
+      color: #fff !important;
     }
     /* Inputs and Textareas */
     input[type="text"], textarea {
@@ -94,11 +94,10 @@
 <body>
   <div class="header">
     <div class="container">
-     <br><br><h1>Finite Automata Visualization</h1><br>
+      <br><br><h1>Finite Automata Visualization</h1><br>
       <h2>(Uses String)</h2><br>
       <button class="btn" onclick="window.location.href='../../button_input.html'">Change Input Type</button>
       <button id="backToCreate" class="btn">Create New Automata</button>
-
     </div>
   </div>
 
@@ -115,30 +114,25 @@
           <div class="instructions">
             <!-- Simulation instructions can go here -->
           </div>
-
           <p>
             <div class="control-group">
               <input id="inputString" type="text" class="input-block-level" placeholder="Enter String" disabled spellcheck="false">
             </div>
           </p>
-
           <p>
             <button id="startStop" class="btn" disabled>Start</button>
-            <button id="inputFirst" class="btn" disabled>
+            <button id="inputFirst" class="btn" disabled style="display: none;">
               <i class="icon-fast-backward"></i> Reset
             </button>
+            
             <!-- <button id="inputPrevious" class="btn" disabled>
               <i class="icon-backward"></i> Step backward
             </button> -->
             <button id="inputNext" class="btn" disabled>
-              <i class="icon-forward"></i> Step
+              <i></i> Step
             </button>
           </p>
-
           <p id="inputError" class="text-error"></p>
-
-          <!-- "Create" button to go back to the create page -->
-
         </div>
       </div>
     </div>
@@ -154,24 +148,29 @@
   <script src="scripts/fsm_simulator.js"></script>
   <script>
     $(document).ready(function(){
-      // Retrieve the stored FSM definition and recreate the automaton
       var fsmDef = localStorage.getItem("fsmDefinition");
-      if (fsmDef) {
+      if (fsmDef && fsmDef.trim() !== "") {
+        // Always reinitialize the automaton for simulation.
         automaton = noam.fsm.parseFsmFromString(fsmDef);
         drawGraph();
         resetAutomaton();
-        // Enable simulation controls if appropriate
-        $("#inputString").attr("disabled", false);
-        $("#startStop").attr("disabled", false);
-      }
-      // Restore the saved transition graph HTML if available
-      var storedGraph = localStorage.getItem("transitionGraph");
-      if (storedGraph) {
-        $("#automatonGraph").html(storedGraph);
+        
+        // If you want to keep the stored graph, you can optionally override the drawing:
+        var storedGraph = localStorage.getItem("transitionGraph");
+        if (storedGraph && storedGraph.trim() !== "") {
+          $("#automatonGraph").html(storedGraph);
+        }
+        
+        // Enable simulation controls
+        $("#inputString").removeAttr("disabled");
+        $("#startStop").removeAttr("disabled");
+      } else {
+        $("#automatonGraph").html("<p style='color:#e74c3c;'>No valid automata found. Please create an automata first.</p>");
       }
     });
 
-    // "Create" button to go back to index.html so the user can update the automaton.
+
+    // "Create New Automata" button: go back to index.html.
     $("#backToCreate").click(function() {
       window.location.href = "index.html";
     });
