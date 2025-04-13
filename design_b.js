@@ -1527,16 +1527,13 @@ app.stage.addChild(acceptTracker);
 acceptTracker.visible = false;
 
 function initControls() {
-
     let inputbox = document.getElementById('inputbox');
     let wordbox = document.getElementById('wordbox');
-
     let delstate = document.getElementById('delstate');
     let addstate = document.getElementById('addstate');
-
     let addarrow = document.getElementById('addarrow');
-
     let acceptingButton = document.getElementById('accept');
+    let setInitialButton = document.getElementById('setInitial'); // Reference to the "Initial State" button
 
     inputbox.value = null;
     inputbox.disabled = true;
@@ -1544,11 +1541,10 @@ function initControls() {
     wordbox.value = null;
 
     // Create mode UI elements
-
     addstate.onclick = function () {
         addingState = true;
         stateGhost.visible = true;
-    }
+    };
 
     delstate.onclick = function () {
         if (focusTarget instanceof State) {
@@ -1563,7 +1559,7 @@ function initControls() {
         inputbox.disabled = true;
         delstate.disabled = true;
         acceptingButton.disabled = true;
-    }
+    };
 
     inputbox.oninput = function () {
         if ((focusTarget instanceof State) || (focusTarget instanceof Arrow)) {
@@ -1572,26 +1568,40 @@ function initControls() {
                 inputbox.placeholder = "Empty string";
             }
         }
-    }
+    };
 
     addarrow.onclick = function () {
         if (workingGraph.states[0] && creatingArrow === null) {
             creatingArrow = new ArrowConstructor();
             arrowGhost.visible = true;
         }
-    }
+    };
 
     acceptingButton.onclick = function () {
         if (focusTarget instanceof State) {
             if (focusTarget.accepting) {
                 workingGraph.removeAcception(focusTarget);
-                acceptingButton.value = "Finish";
+                acceptingButton.value = "Final";
             } else {
                 workingGraph.makeAccepting(focusTarget);
-                acceptingButton.value = "Finish";
+                acceptingButton.value = "Final";
             }
         }
-    }
+    };
+
+    // Link the "Initial State" button to initial state creation
+    setInitialButton.onclick = function () {
+        if (workingGraph.states.length > 0) {
+            creatingArrow = new ArrowConstructor();
+            creatingArrow.initial = true; // Mark as initial arrow creation
+            arrowGhost.visible = true;
+            arrowGhost.text = "Click on initial state.";
+        } else {
+            alert("No states available to set as initial.");
+        }
+    };
+
+    // Mode switching and other controls remain unchanged...
 
     // Mode switching
 
@@ -1799,6 +1809,8 @@ workingGraph = graph;
  * @returns 
  */
 function onButtonDown(event) {
+
+    console.log(event);
     focusTarget = this;
 
     if (addingState) { // Handle state creation
@@ -1851,7 +1863,7 @@ function onButtonDown(event) {
         if (focusTarget.accepting) {
             document.getElementById('accept').value = "Accepting";
         } else {
-            document.getElementById('accept').value = "Finish";
+            document.getElementById('accept').value = "Final";
         }
     } else {
         document.getElementById('accept').disabled = true;
