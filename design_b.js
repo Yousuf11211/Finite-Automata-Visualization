@@ -1516,14 +1516,12 @@ wordTracker.y = 540;
 app.stage.addChild(wordTracker);
 wordTracker.visible = false;
 
-//let acceptTracker = new PIXI.Text('String Accepted', acceptFont);
-let acceptTracker = new PIXI.Text('abc', acceptFont);
+let acceptTracker = new PIXI.Text('String Accepted', acceptFont);
+// let acceptTracker = new PIXI.Text('', acceptFont);
 
 acceptTracker.x = 850;
 acceptTracker.y = 520;
-acceptTracker.fill = 0xD2D2D4;
-//acceptTracker.fill = 0x00bb00;
-
+acceptTracker.fill = 0x00bb00;
 
 app.stage.addChild(acceptTracker);
 acceptTracker.visible = false;
@@ -1587,10 +1585,10 @@ function initControls() {
         if (focusTarget instanceof State) {
             if (focusTarget.accepting) {
                 workingGraph.removeAcception(focusTarget);
-                acceptingButton.value = "Normal";
+                acceptingButton.value = "Finish";
             } else {
                 workingGraph.makeAccepting(focusTarget);
-                acceptingButton.value = "Accepted";
+                acceptingButton.value = "Finish";
             }
         }
     }
@@ -1853,7 +1851,7 @@ function onButtonDown(event) {
         if (focusTarget.accepting) {
             document.getElementById('accept').value = "Accepting";
         } else {
-            document.getElementById('accept').value = "Normal";
+            document.getElementById('accept').value = "Finish";
         }
     } else {
         document.getElementById('accept').disabled = true;
